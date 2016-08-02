@@ -1,6 +1,6 @@
-# OCHP client [![Build Status](https://secure.travis-ci.org/thenewmotion/e-clearing-client_ochp-1.2.png)](http://travis-ci.org/thenewmotion/e-clearing-client_ochp-1.2)
+# OCHP client [![Build Status](https://secure.travis-ci.org/thenewmotion/ochp-client.png)](http://travis-ci.org/thenewmotion/ochp-client)
 
-Client for [www.e-clearing.net](http://www.e-clearing.net) written in Scala, for Scala 2.11+
+Client for [OCHP](http://ochp.eu) written in Scala, for Scala 2.11+
 
 ## Includes
 
@@ -8,7 +8,7 @@ Client for [www.e-clearing.net](http://www.e-clearing.net) written in Scala, for
 
 * API trait to communicate with the clearing house:
     ```scala
-    trait EclearingApi {
+    trait OchpApi {
       def recvAllTokens(): List[ChargeToken]
       def sendAllTokens(tokens: List[ChargeToken]): Result[ChargeToken]
       def recvNewTokens(lastUpdate: DateTime): List[ChargeToken]
@@ -30,7 +30,7 @@ Client for [www.e-clearing.net](http://www.e-clearing.net) written in Scala, for
     ```scala
     val service = new OchpService {
       val conf = OchpConfig(
-        wsUri = "http://localhost:8088/mockeCHS-OCHP_1.2",
+        wsUri = "http://localhost:8088/mockeCHS-OCHP_1.3",
         user = "me",
         password = "mypass"
       )
@@ -63,8 +63,8 @@ In order for these tests to work, valid credentials need to be provided: `src/it
     ```xml
     <dependency>
         <groupId>com.thenewmotion</groupId>
-        <artifactId>ochp-client-1.2_2.11</artifactId>
-        <version>1.24</version>
+        <artifactId>ochp-client_2.11</artifactId>
+        <version>1.3.0</version>
     </dependency>
     ```
 
@@ -77,5 +77,5 @@ In order for these tests to work, valid credentials need to be provided: `src/it
 
 2. Add the following dependency:
     ```scala
-    "com.thenewmotion" %% "ochp-client-1.2" % "1.24",
+    "com.thenewmotion" %% "ochp-client" % "1.3.0",
     ```
