@@ -14,7 +14,7 @@ val ochp = (project in file("."))
     soapui.settings,
 
     organization := "com.thenewmotion",
-    name := "ochp-client-1.2",
+    name := "ochp-client",
     moduleName := name.value,
 
     libraryDependencies ++= Seq(
