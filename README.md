@@ -31,6 +31,7 @@ Client for [OCHP](http://ochp.eu) written in Scala, for Scala 2.11+
     val service = new OchpService {
       val conf = OchpConfig(
         wsUri = "http://localhost:8088/mockeCHS-OCHP_1.3",
+        liveWsUri = "http://localhost:8088/mockeCHS-OCHP_1.3-live",
         user = "me",
         password = "mypass"
       )
@@ -44,7 +45,7 @@ Integration tests can be run as follows:
 
 ```sbt it:test```
 
-In order for these tests to work, valid credentials need to be provided: `src/it/resources/reference.conf` as a reference.
+In order for these tests to work, valid credentials need to be provided (see `src/it/resources/reference.conf` for reference).
 
 ## Setup
 
