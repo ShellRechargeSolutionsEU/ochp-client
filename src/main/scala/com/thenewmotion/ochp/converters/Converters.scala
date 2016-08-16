@@ -5,6 +5,7 @@ import api._
 import ChargePointStatus.ChargePointStatus
 import com.thenewmotion.time.Imports._
 import DateTimeConverters._
+import DurationConverter._
 import GeoPointConverters._
 import eu.ochp._1.{ConnectorType => GenConnectorType, EvseImageUrlType => GenEvseImageUrlType, EmtId => GenEmtId, CdrStatusType => GenCdrStatusType, ConnectorFormat => GenConnectorFormat, ConnectorStandard => GenConnectorStandard, CdrPeriodType => GenCdrPeriodType, BillingItemType => GenBillingItemType, EvseStatusType => GetEvseStatusType, _}
 import org.slf4j.LoggerFactory
@@ -202,7 +203,7 @@ object Converters {
     cdr.zipCode match {case Some(s) if !s.isEmpty => cdrInfo.setZipCode(s)}
     cdr.city match {case Some(s) if !s.isEmpty => cdrInfo.setCity(s)}
     cdrInfo.setCountry(cdr.country)
-    cdr.duration  match {case Some(s) if !s.isEmpty => cdrInfo.setDuration(s)}
+    cdr.duration.map(d => cdrInfo.setDuration(toOchp(d)))
     val eid = new GenEmtId()
     eid.setInstance(cdr.emtId.tokenId)
     eid.setTokenType(cdr.emtId.tokenType.toString)

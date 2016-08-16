@@ -3,6 +3,7 @@ package converters
 
 import Converters._
 import api._
+import com.thenewmotion.time.Imports._
 
 class CDRSpec extends Spec {
   "converting a CDR into CDRInfo and back returns the original value" >> {
@@ -18,7 +19,7 @@ class CDRSpec extends Spec {
       status = CdrStatus.withName("new"),
       startDateTime = DateTimeNoMillis("2014-08-08T10:10:10+01:00"),
       endDateTime = DateTimeNoMillis("2014-08-08T18:10:10+01:00"),
-      duration = Some("200"),
+      duration = Some(Duration.standardMinutes(10)),
       houseNumber = Some("585"),
       address = Some("Keizersgracht"),
       zipCode = Some("1017 DR"),
