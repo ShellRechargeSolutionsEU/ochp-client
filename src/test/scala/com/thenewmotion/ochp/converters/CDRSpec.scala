@@ -2,6 +2,7 @@ package com.thenewmotion.ochp
 package converters
 
 import Converters._
+import CDRConverter._
 import api._
 import com.thenewmotion.time.Imports._
 
@@ -42,6 +43,6 @@ class CDRSpec extends Spec {
           itemPrice = 6,
           periodCost = Some(5))))
 
-    cdrInfoToCdr(cdrToCdrInfo(cdr)) mustEqual cdr
+    fromOchp(cdrToCdrInfo(cdr)) must beSome(cdr)
   }
 }
