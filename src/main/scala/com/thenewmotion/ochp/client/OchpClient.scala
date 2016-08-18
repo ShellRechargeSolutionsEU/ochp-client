@@ -2,6 +2,7 @@ package com.thenewmotion.ochp
 package client
 
 import converters.Converters._
+import converters.CDRConverter
 import converters.DateTimeConverters._
 import java.util.{HashMap => JMap}
 import javax.xml.namespace.QName
@@ -60,7 +61,7 @@ class OchpClient(cxfClient: OCHP13) {
   def getCdrs() = {
     val resp: GetCDRsResponse = cxfClient.getCDRs(
       new GetCDRsRequest)
-    resp.getCdrInfoArray.asScala.toList.map(implicitly[CDR](_))
+    resp.getCdrInfoArray.asScala.toList.flatMap(CDRConverter.fromOchp)
   }
 
   def addCdrs(cdrs: Seq[CDR]) = {
@@ -68,7 +69,7 @@ class OchpClient(cxfClient: OCHP13) {
     req.getCdrInfoArray.addAll(cdrs.map(implicitly[CDRInfo](_)).asJava)
     val resp = cxfClient.addCDRs(req)
     Result[CDR](resp.getResult.getResultCode.getResultCode, resp.getResult.getResultDescription,
-      resp.getImplausibleCdrsArray.asScala.toList.map(implicitly[CDR](_)))
+      resp.getImplausibleCdrsArray.asScala.toList.flatMap(CDRConverter.fromOchp))
   }
 
   def confirmCdrs(approvedCdrs: Seq[CDR], declinedCdrs: Seq[CDR]) = {

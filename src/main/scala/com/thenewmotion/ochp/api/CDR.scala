@@ -11,7 +11,7 @@ case class CDR(
   status: CdrStatus.Value,
   startDateTime: DateTime,
   endDateTime: DateTime,
-  duration: Option[String] = None,
+  duration: Option[Duration] = None,
   houseNumber: Option[String] = None,
   address: Option[String] = None,
   zipCode: Option[String] = None,
