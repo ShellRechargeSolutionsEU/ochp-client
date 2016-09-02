@@ -145,9 +145,12 @@ object Converters extends Common {
   }
 
   implicit def cdrToCdrInfo(cdr: CDR): CDRInfo = {
+    def ifNonEmptyThen(opt: Option[String])(f: String => Unit) =
+      opt.filter(_.nonEmpty).foreach(f)
+
     import cdr._
     val cdrInfo = new CDRInfo
-    cdr.address match {case Some(s) if !s.isEmpty => cdrInfo.setAddress(s)}
+    ifNonEmptyThen(cdr.address)(cdrInfo.setAddress)
     cdrInfo.setCdrId(cdr.cdrId)
     cdrInfo.setChargePointType(cdr.chargePointType)
 
@@ -160,9 +163,9 @@ object Converters extends Common {
     cType.setConnectorStandard(cStandard)
     cdrInfo.setConnectorType(cType)
     cdrInfo.setContractId(cdr.contractId)
-    cdr.houseNumber match {case Some(s) if !s.isEmpty => cdrInfo.setHouseNumber(s)}
-    cdr.zipCode match {case Some(s) if !s.isEmpty => cdrInfo.setZipCode(s)}
-    cdr.city match {case Some(s) if !s.isEmpty => cdrInfo.setCity(s)}
+    ifNonEmptyThen(cdr.houseNumber)(cdrInfo.setHouseNumber)
+    ifNonEmptyThen(cdr.zipCode)(cdrInfo.setZipCode)
+    ifNonEmptyThen(cdr.city)(cdrInfo.setCity)
     cdrInfo.setCountry(cdr.country)
     cdr.duration.map(d => cdrInfo.setDuration(toOchp(d)))
     val eid = new GenEmtId()
@@ -174,10 +177,10 @@ object Converters extends Common {
     cdrInfo.setEndDateTime(WithOffset.toOchp(endDateTime))
     cdrInfo.setEvseId(cdr.evseId)
 
-    cdr.liveAuthId match {case Some(s) if !s.isEmpty => cdrInfo.setLiveAuthId(s)}
+    ifNonEmptyThen(cdr.liveAuthId)(cdrInfo.setLiveAuthId)
     cdrInfo.setMaxSocketPower(cdr.maxSocketPower)
-    cdr.meterId match {case Some(s) if !s.isEmpty => cdrInfo.setMeterId(s)}
-    cdr.productType match {case Some(s) if !s.isEmpty => cdrInfo.setProductType(s)}
+    ifNonEmptyThen(cdr.meterId)(cdrInfo.setMeterId)
+    ifNonEmptyThen(cdr.productType)(cdrInfo.setProductType)
 
     val cdrStatus = new GenCdrStatusType()
     cdrStatus.setCdrStatusType(cdr.status.toString)
