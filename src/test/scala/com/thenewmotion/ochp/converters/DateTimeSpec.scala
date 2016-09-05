@@ -7,7 +7,7 @@ import org.joda.time.{DateTime, DateTimeZone}
 
 
 class DateTimeSpec extends Spec {
-  "DateTimeType is intended only for UTC date times" >> {
+  "DateTimeType is intended only for UTC datetimes" >> {
     import Utc._
 
     val now = "2016-09-05T15:30:16Z"
@@ -21,18 +21,23 @@ class DateTimeSpec extends Spec {
   "LocalDateTimeType" >> {
     import WithOffset._
 
-    "is intended only for date times with offset" >> {
+    "is intended only for datetimes with offset" >> {
       val ldt = new LocalDateTimeType {
         setLocalDateTime("2016-09-05T15:30:16+02:00")
       }
+      val res = toOchp(fromOchp(ldt)).getLocalDateTime
 
-      toOchp(fromOchp(ldt)).getLocalDateTime mustEqual ldt.getLocalDateTime
+      new DateTime(res) mustEqual new DateTime(ldt.getLocalDateTime)
     }
 
-    "GMT date times must be printed with an offset as well!" >> {
-      val dt = new DateTime(2016, 9, 5, 16, 10, 25).withZone(DateTimeZone.UTC)
+    "requires GMT datetimes to be written as '+00:00', instead of 'Z'" >> {
+      val dt = new DateTime(2016, 9, 5, 16, 10, 25, DateTimeZone.UTC)
+      val res = toOchp(dt).getLocalDateTime
 
-      toOchp(dt).getLocalDateTime mustEqual "2016-09-05T14:10:25+00:00"
+      new DateTime(res) mustEqual new DateTime("2016-09-05T16:10:25+00:00")
+
+      res must contain("+00:00")
+      res must not contain("Z")
     }
   }
 
