@@ -13,19 +13,19 @@ Client for [OCHP](http://ochp.eu) written in Scala, for Scala 2.11+
       def sendAllTokens(tokens: List[ChargeToken]): Result[ChargeToken]
       def recvNewTokens(lastUpdate: DateTime): List[ChargeToken]
       def sendNewTokens(tokens: List[ChargeToken]): Result[ChargeToken]
-    
+
       def sendAllChargePoints(chargePoints: List[ChargePoint]): Result[ChargePoint]
       def recvAllChargePoints():List[ChargePoint]
       def sendNewChargePoints(chargePoints: List[ChargePoint]): Result[ChargePoint]
       def recvNewChargePoints(lastUpdate: DateTime):List[ChargePoint]
-    
+
       def sendCdrs(cdrs: List[CDR]): Result[CDR]
       def recvCdrs(): List[CDR]
       def confCdrs(approvedCdrs: List[CDR], declinedCdrs: List[CDR])
     }
 
     ```
-    
+
 * Service trait that can be instantiated like here:
     ```scala
     val service = new OchpService {
@@ -65,18 +65,18 @@ In order for these tests to work, valid credentials need to be provided (see `sr
     <dependency>
         <groupId>com.thenewmotion</groupId>
         <artifactId>ochp-client_2.11</artifactId>
-        <version>1.3.2</version>
+        <version>1.3.3</version>
     </dependency>
     ```
 
 ### SBT
 
-1. Add the following resolver: 
+1. Add the following resolver:
     ```scala
     resolvers += "TNM" at "http://nexus.thenewmotion.com/content/groups/public"
     ```
 
 2. Add the following dependency:
     ```scala
-    "com.thenewmotion" %% "ochp-client" % "1.3.2"
+    "com.thenewmotion" %% "ochp-client" % "1.3.3"
     ```
