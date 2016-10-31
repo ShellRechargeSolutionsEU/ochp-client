@@ -78,5 +78,5 @@ In order for these tests to work, valid credentials need to be provided (see `sr
 
 2. Add the following dependency:
     ```scala
-    "com.thenewmotion" %% "ochp-client" % "1.3.5"
+    "com.thenewmotion" %% "ochp-client" % "1.3.6"
     ```

@@ -14,6 +14,7 @@ import eu.ochp._1._
 import eu.ochp._1_3.{OCHP13, OCHP13Live}
 import org.apache.cxf.endpoint.Endpoint
 import org.apache.cxf.frontend.ClientProxy
+import org.apache.cxf.interceptor.{LoggingInInterceptor, LoggingOutInterceptor}
 import org.apache.cxf.transport.http.HTTPConduit
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor
@@ -210,6 +211,8 @@ object OchpClient {
 
     val wssOut = new WSS4JOutInterceptor(outProps)
     cxfEndpoint.getOutInterceptors.add(wssOut)
+    cxfEndpoint.getOutInterceptors.add(new LoggingOutInterceptor)
+    cxfEndpoint.getInInterceptors.add(new LoggingInInterceptor)
     port
   }
 
