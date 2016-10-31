@@ -48,28 +48,18 @@ object Converters extends Common {
   implicit def roamingAuthorisationInfoToToken(rai: RoamingAuthorisationInfo): ChargeToken = {
     ChargeToken(
       contractId = rai.getContractId,
-      emtId = EmtId(
-        tokenId = rai.getEmtId.getInstance,
-        tokenType = TokenType.withName(rai.getEmtId.getTokenType),
-        tokenSubType = Option(rai.getEmtId.getTokenSubType) map {TokenSubType.withName}),
+      emtId = EmtIdConverter.fromOchp(rai.getEmtId),
       printedNumber = Option(rai.getPrintedNumber),
       expiryDate = DateTimeNoMillis(rai.getExpiryDate.getDateTime)
     )
   }
 
   implicit def tokenToRoamingAuthorisationInfo(token: ChargeToken): RoamingAuthorisationInfo = {
-    import token._
-
     val rai = new RoamingAuthorisationInfo()
-    val emtId = new GenEmtId()
-    rai.setContractId(contractId)
-    emtId.setInstance(token.emtId.tokenId)
-    emtId.setTokenType(token.emtId.tokenType.toString)
-    token.emtId.tokenSubType foreach {st => emtId.setTokenSubType(st.toString)}
-    emtId.setRepresentation("plain")
-    rai.setEmtId(emtId)
-    token.printedNumber foreach {pn => rai.setPrintedNumber(pn.toString)}
-    rai.setExpiryDate(Utc.toOchp(expiryDate))
+    rai.setContractId(token.contractId)
+    rai.setEmtId(EmtIdConverter.toOchp(token.emtId))
+    token.printedNumber.foreach(pn => rai.setPrintedNumber(pn.toString))
+    rai.setExpiryDate(Utc.toOchp(token.expiryDate))
     rai
   }
 
@@ -168,11 +158,7 @@ object Converters extends Common {
     ifNonEmptyThen(cdr.city)(cdrInfo.setCity)
     cdrInfo.setCountry(cdr.country)
     cdr.duration.map(d => cdrInfo.setDuration(toOchp(d)))
-    val eid = new GenEmtId()
-    eid.setInstance(cdr.emtId.tokenId)
-    eid.setTokenType(cdr.emtId.tokenType.toString)
-    cdr.emtId.tokenSubType.map(tst => eid.setTokenSubType(tst.toString))
-    cdrInfo.setEmtId(eid)
+    cdrInfo.setEmtId(EmtIdConverter.toOchp(cdr.emtId))
     cdrInfo.setStartDateTime(WithOffset.toOchp(startDateTime))
     cdrInfo.setEndDateTime(WithOffset.toOchp(endDateTime))
     cdrInfo.setEvseId(cdr.evseId)

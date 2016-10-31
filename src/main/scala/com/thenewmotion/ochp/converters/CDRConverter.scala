@@ -19,11 +19,7 @@ object CDRConverter extends Common {
     } yield CDR (
       cdrId = cdrinfo.getCdrId,
       evseId = cdrinfo.getEvseId,
-      emtId = EmtId(
-        tokenId = cdrinfo.getEmtId.getInstance,
-        tokenType = TokenType.withName(cdrinfo.getEmtId.getTokenType),
-        tokenSubType = Option(cdrinfo.getEmtId.getTokenSubType) map {TokenSubType.withName}
-      ),
+      emtId = EmtIdConverter.fromOchp(cdrinfo.getEmtId),
       contractId = cdrinfo.getContractId,
       liveAuthId = toNonEmptyOption(cdrinfo.getLiveAuthId),
       status = CdrStatus.withName(cdrinfo.getStatus.getCdrStatusType),

@@ -27,7 +27,8 @@ trait OchpApi {
 case class EmtId(
   tokenType: TokenType = TokenType.rfid,
   tokenSubType: Option[TokenSubType.Value] = None,
-  tokenId: String
+  tokenId: String,
+  representation: Option[TokenRepresentation.Value] = None
 )
 
 case class Connector (
