@@ -11,9 +11,9 @@ trait EmtIdConverter {
     val emtId = new GenEmtId {
       setInstance(id.tokenId)
       setTokenType(id.tokenType.toString)
+      setRepresentation(id.representation.toString)
     }
 
-    id.representation.foreach(r => emtId.setRepresentation(r.toString))
     id.tokenSubType.foreach(st => emtId.setTokenSubType(st.toString))
 
     emtId
@@ -24,7 +24,7 @@ trait EmtIdConverter {
       tokenId = value.getInstance,
       tokenType = TokenType.withName(value.getTokenType),
       tokenSubType = Option(value.getTokenSubType).map(TokenSubType.withName),
-      representation = Option(value.getRepresentation).map(TokenRepresentation.withName))
+      representation = TokenRepresentation.withName(value.getRepresentation))
   }
 }
 

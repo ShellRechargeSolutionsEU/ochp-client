@@ -11,7 +11,7 @@ class EmtIdSpec extends Spec {
       tokenId = "NLTNMC00000609",
       tokenType = TokenType.rfid,
       tokenSubType = Some(TokenSubType.mifareCls),
-      representation = Some(TokenRepresentation.sha160))
+      representation = TokenRepresentation.sha160)
 
     fromOchp(toOchp(emtId)) mustEqual emtId
   }

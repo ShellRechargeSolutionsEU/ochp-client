@@ -28,7 +28,7 @@ case class EmtId(
   tokenType: TokenType = TokenType.rfid,
   tokenSubType: Option[TokenSubType.Value] = None,
   tokenId: String,
-  representation: Option[TokenRepresentation.Value] = None
+  representation: TokenRepresentation.Value
 )
 
 case class Connector (

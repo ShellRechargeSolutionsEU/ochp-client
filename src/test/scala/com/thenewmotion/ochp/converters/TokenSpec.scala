@@ -11,7 +11,7 @@ class TokenSpec extends Spec {
       emtId = EmtId(
         tokenType = TokenType.rfid,
         tokenSubType = Some(TokenSubType.withName("mifareCls")),
-        representation = Some(TokenRepresentation.plain),
+        representation = TokenRepresentation.plain,
         tokenId = "96B0149B4EA098BE769EFDE5BD6A7403F3A25BA0"),
       printedNumber = Some("YYABCC00000003J"),
       expiryDate = DateTimeNoMillis("2014-07-14T02:00:00+02:00"))

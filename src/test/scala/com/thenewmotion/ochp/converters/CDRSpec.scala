@@ -15,9 +15,9 @@ class CDRSpec extends Spec {
         tokenId = "96B0149B4EA098BE769EFDE5BD6A7403F3A25BA0",
         tokenType = TokenType.withName("rfid"),
         tokenSubType = Some(TokenSubType.withName("mifareCls")),
-        representation = Some(TokenRepresentation.sha256)),
+        representation = TokenRepresentation.sha256),
       contractId = "DE-LND-C00001516-E",
-      liveAuthId = Some("wtf"),
+      liveAuthId = Some("abc"),
       status = CdrStatus.withName("new"),
       startDateTime = DateTimeNoMillis("2014-08-08T10:10:10+01:00"),
       endDateTime = DateTimeNoMillis("2014-08-08T18:10:10+01:00"),
@@ -32,7 +32,7 @@ class CDRSpec extends Spec {
         connectorStandard = ConnectorStandard.`TESLA-R`,
         connectorFormat = ConnectorFormat.Socket),
       maxSocketPower = 16,
-      productType = Some("wtf"),
+      productType = Some("abc"),
       meterId = Some("1234"),
       chargingPeriods = List(
         CdrPeriod(
