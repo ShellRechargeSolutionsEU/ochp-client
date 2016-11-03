@@ -80,3 +80,7 @@ In order for these tests to work, valid credentials need to be provided (see `sr
     ```scala
     "com.thenewmotion" %% "ochp-client" % "1.3.8"
     ```
+
+### A note about versioning
+
+This library does not follow semantic versioning because we want to keep its version as close as possible to the OCHP version it implements: as such, all version related to OCHP 1.3 will be tagged as `1.3.x`.
