@@ -160,7 +160,7 @@ case class Result[A](status: ResultCode.Value, description: String, items: List[
 object Result  {
   def apply[A](code: String, desc: String, items: List[A]) = {
     new Result(
-      Try(ResultCode.withName(code.toLowerCase)).getOrElse(ResultCode.failure),
+      Try(ResultCode.withName(code.toLowerCase)).getOrElse(ResultCode.unknown),
       desc, items
     )
   }
@@ -168,9 +168,13 @@ object Result  {
 
 object ResultCode extends Enumeration {
   type ResultCode = Value
-  val success = Value("success")
-  val failure = Value("failure")
+  val ok = Value("ok")
+  val unknown = Value("unknown")
   val partly = Value("partly")
+  val notAuthorized = Value("not-authorized")
+  val invalidId = Value("invalid-id")
+  val server = Value("server")
+  val format = Value("format")
 }
 
 object OchpClient {

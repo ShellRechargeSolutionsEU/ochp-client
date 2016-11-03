@@ -4,6 +4,7 @@ package client
 import api._
 
 import com.typesafe.config.ConfigFactory
+import org.joda.time.Duration
 import org.specs2.mutable.Specification
 import org.specs2.specification.Scope
 
@@ -31,14 +32,13 @@ class OchpClientSpecIT extends Specification {
 
     " add CDRs" >> new TestCdrScope {
       val result = client.addCdrs(Seq(cdr1))
-      result.status === ResultCode.success
+      result.status === ResultCode.ok
     }
 
     " confirm CDRs" >> new TestCdrScope {
       val result = client.confirmCdrs(Seq(cdr1), Seq(cdr2))
-      result.status === ResultCode.success
+      result.status === ResultCode.ok
     }
-
 
     " receive roamingAuthorisationList" >> new TestScope {
       val authList = client.roamingAuthorisationList()
@@ -51,7 +51,7 @@ class OchpClientSpecIT extends Specification {
       val tokens = List(token)
       val rais = tokens
       val result = client.setRoamingAuthorisationList(rais)
-      result.status === ResultCode.success
+      result.status === ResultCode.ok
     }
 
     " return an error for rejected roamingAuthorisationList" >> new TestScope {
@@ -60,7 +60,7 @@ class OchpClientSpecIT extends Specification {
         emtId = token.emtId.copy(
           tokenId = "96B0149B4EA098BE769EFDE5BD6A7403F3A25BA1"))
       val result = client.setRoamingAuthorisationList(List(rejectedToken))
-      result.status === ResultCode.failure
+      result.status === ResultCode.invalidId
     }
 
     " receive roamingAuthorisationListUpdate" >> new TestScope {
@@ -77,9 +77,8 @@ class OchpClientSpecIT extends Specification {
           emtId = token.emtId.copy(
             tokenId = "96B0149B4EA098BE769EFDE5BD6A7403F3A25BA1")))
       val result = client.setRoamingAuthorisationListUpdate(tokens)
-      result.status === ResultCode.success
+      result.status === ResultCode.ok
     }
-
 
     " receive chargepointList" >> new TestChargePointScope {
       val result = client.chargePointList()
@@ -88,7 +87,7 @@ class OchpClientSpecIT extends Specification {
 
     " set charge point list" >> new TestChargePointScope {
       val result = client.setChargePointList(Seq(chargePoint1))
-      result.status === ResultCode.success
+      result.status === ResultCode.ok
     }
 
     " receive chargepointListUpdate" >> new TestScope {
@@ -98,9 +97,8 @@ class OchpClientSpecIT extends Specification {
 
     " set charge point list update" >> new TestChargePointScope {
       val result = client.setChargePointListUpdate(Seq(chargePoint1))
-      result.status === ResultCode.success
+      result.status === ResultCode.ok
     }
-
   }
 
   trait TestScope extends Scope {
@@ -118,7 +116,8 @@ class OchpClientSpecIT extends Specification {
       contractId = "YYABCC00000003",
       emtId=EmtId(
         tokenSubType = Some(TokenSubType.withName("mifareCls")),
-        tokenId = "96B0149B4EA098BE769EFDE5BD6A7403F3A25BA0"),
+        tokenId = "96B0149B4EA098BE769EFDE5BD6A7403F3A25BA0",
+        representation = TokenRepresentation.plain),
       printedNumber = Some("YYABCC00000003J"),
       expiryDate = DateTimeNoMillis("2014-07-14T02:00:00+02:00")
     )
@@ -131,14 +130,15 @@ class OchpClientSpecIT extends Specification {
       emtId = EmtId(
         tokenId = "96B0149B4EA098BE769EFDE5BD6A7403F3A25BA0",
         tokenType = TokenType.withName("rfid"),
-        tokenSubType = Some(TokenSubType.withName("mifareCls"))
+        tokenSubType = Some(TokenSubType.withName("mifareCls")),
+        representation = TokenRepresentation.plain
       ),
       contractId = "DE-LND-C00001516-E",
       liveAuthId = Some("wtf"),
       status = CdrStatus.withName("new"),
       startDateTime = DateTimeNoMillis("2014-08-08T10:10:10+01:00"),
       endDateTime = DateTimeNoMillis("2014-08-08T18:10:10+01:00"),
-      duration = Some("200"),
+      duration = Some(Duration.standardSeconds(200)),
       houseNumber = Some("585"),
       address = Some("Keizersgracht"),
       zipCode = Some("1017 DR"),
@@ -168,14 +168,15 @@ class OchpClientSpecIT extends Specification {
       emtId = EmtId(
         tokenId = "96B0149B4EA098BE769EFDE5BD6A7403F3A25BA1",
         tokenType = TokenType.withName("rfid"),
-        tokenSubType = Some(TokenSubType.withName("mifareCls"))
+        tokenSubType = Some(TokenSubType.withName("mifareCls")),
+        representation = TokenRepresentation.plain
       ),
       contractId = "DE-LND-C00001516-E",
       liveAuthId = Some("wtf"),
       status = CdrStatus.withName("new"),
       startDateTime = DateTimeNoMillis("2014-08-08T10:10:10+01:00"),
       endDateTime = DateTimeNoMillis("2014-08-08T18:10:10+01:00"),
-      duration = Some("200"),
+      duration = Some(Duration.standardSeconds(200)),
       houseNumber = Some("585"),
       address = Some("Keizersgracht"),
       zipCode = Some("1017 DR"),

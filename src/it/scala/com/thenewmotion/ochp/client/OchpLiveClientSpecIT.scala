@@ -44,7 +44,7 @@ class OchpLiveClientSpecIT extends Specification {
         )
       )
       val result = liveClient.updateStatus(evseStats, Some(DateTimeNoMillis("2014-07-14T00:00:00Z")))
-      result.status === ResultCode.success
+      result.status === ResultCode.ok
     }
   }
 

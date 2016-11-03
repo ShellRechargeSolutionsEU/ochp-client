@@ -5369,7 +5369,7 @@ information that is more actual than the given value.</s:documentation>
                <ns:LocalDateTime>2014-08-08T10:10:10+01:00</ns:LocalDateTime>
             </ns:endDateTime>
             <!--Optional:-->
-            <ns:duration>200</ns:duration>
+            <ns:duration>000:20:00</ns:duration>
             <!--Optional:-->
             <ns:houseNumber>585</ns:houseNumber>
             <!--Optional:-->
@@ -5802,9 +5802,9 @@ else
       <ns:SetRoamingAuthorisationListResponse>
          <ns:result>
             <ns:resultCode>
-               <ns:resultCode>nok</ns:resultCode>
+               <ns:resultCode>invalid-id</ns:resultCode>
             </ns:resultCode>
-            <ns:resultDescription>Data wrong.</ns:resultDescription>
+            <ns:resultDescription>One or more ID (EVSE/Contract) were not valid for this user.</ns:resultDescription>
          </ns:result>
          <ns:refusedRoamingAuthorisationInfo>
             <ns:EmtId representation="sha-160">

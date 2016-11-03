@@ -65,7 +65,7 @@ In order for these tests to work, valid credentials need to be provided (see `sr
     <dependency>
         <groupId>com.thenewmotion</groupId>
         <artifactId>ochp-client_2.11</artifactId>
-        <version>1.3.7</version>
+        <version>1.3.8</version>
     </dependency>
     ```
 
@@ -78,5 +78,5 @@ In order for these tests to work, valid credentials need to be provided (see `sr
 
 2. Add the following dependency:
     ```scala
-    "com.thenewmotion" %% "ochp-client" % "1.3.7"
+    "com.thenewmotion" %% "ochp-client" % "1.3.8"
     ```
