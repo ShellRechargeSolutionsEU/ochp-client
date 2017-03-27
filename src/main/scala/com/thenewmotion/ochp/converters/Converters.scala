@@ -336,7 +336,7 @@ object Converters extends Common {
     cpi.getImages.addAll(cp.images.map {imagesToGenImages} asJavaCollection)
     cpi.getRelatedResource.addAll(
       cp.relatedResources.map(RelatedResourceConverter.toOchp).asJavaCollection)
-    cp.address.houseNumber foreach {hn => cpi.setAddress(hn)}
+    cp.address.houseNumber foreach {hn => cpi.setHouseNumber(hn)}
     cpi.setAddress(cp.address.address)
     cpi.setZipCode(cp.address.zipCode)
     cpi.setCity(cp.address.city)
