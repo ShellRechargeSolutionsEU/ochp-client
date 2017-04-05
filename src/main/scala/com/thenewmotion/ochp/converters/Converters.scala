@@ -7,15 +7,7 @@ import com.github.nscala_time.time.Imports._
 import DateTimeConverters._
 import DurationConverter._
 import GeoPointConverters._
-import eu.ochp._1.{
-  ConnectorType => GenConnectorType,
-  EvseImageUrlType => GenEvseImageUrlType,
-  CdrStatusType => GenCdrStatusType,
-  ConnectorFormat => GenConnectorFormat,
-  ConnectorStandard => GenConnectorStandard,
-  CdrPeriodType => GenCdrPeriodType,
-  BillingItemType => GenBillingItemType,
-  EvseStatusType => GetEvseStatusType, _}
+import eu.ochp.{_1 => Gen}
 import org.slf4j.LoggerFactory
 import scala.util.{Try, Success, Failure}
 import scala.language.{implicitConversions, postfixOps}
@@ -53,7 +45,7 @@ object Converters extends Common {
 
   private val logger = LoggerFactory.getLogger(Converters.getClass)
 
-  implicit def roamingAuthorisationInfoToToken(rai: RoamingAuthorisationInfo): ChargeToken = {
+  implicit def roamingAuthorisationInfoToToken(rai: Gen.RoamingAuthorisationInfo): ChargeToken = {
     ChargeToken(
       contractId = rai.getContractId,
       emtId = EmtIdConverter.fromOchp(rai.getEmtId),
@@ -62,8 +54,8 @@ object Converters extends Common {
     )
   }
 
-  implicit def tokenToRoamingAuthorisationInfo(token: ChargeToken): RoamingAuthorisationInfo = {
-    val rai = new RoamingAuthorisationInfo()
+  implicit def tokenToRoamingAuthorisationInfo(token: ChargeToken): Gen.RoamingAuthorisationInfo = {
+    val rai = new Gen.RoamingAuthorisationInfo
     rai.setContractId(token.contractId)
     rai.setEmtId(EmtIdConverter.toOchp(token.emtId))
     token.printedNumber.foreach(pn => rai.setPrintedNumber(pn.toString))
@@ -71,7 +63,7 @@ object Converters extends Common {
     rai
   }
 
-  private def toRegularHours (rh: RegularHoursType): Option[RegularHours] = {
+  private def toRegularHours (rh: Gen.RegularHoursType): Option[RegularHours] = {
 
     val normalize: PartialFunction[String, String] = {
       case "24:00" => "23:59"
@@ -90,14 +82,14 @@ object Converters extends Common {
     } yield RegularHours(rh.getWeekday, beg, end)
   }
 
-  private def toChargePointStatusOption(value: ChargePointStatusType): Option[ChargePointStatus] =
+  private def toChargePointStatusOption(value: Gen.ChargePointStatusType): Option[ChargePointStatus] =
     Option(value).flatMap(v => Try(ChargePointStatus.withName(v.getChargePointStatusType)) match {
       case Success(x) => Some(x)
       case Failure(e) => logger.error("Charge point status parsing failure", e); None
     })
 
-  private[ochp] def regularOpeningsAreDefined(value: HoursType) = {
-    def prettyPrint(ht: HoursType) =
+  private[ochp] def regularOpeningsAreDefined(value: Gen.HoursType) = {
+    def prettyPrint(ht: Gen.HoursType) =
       s"""HoursType(
         |regularHours = ${ht.getRegularHours},
         | twentyfourseven = ${ht.isTwentyfourseven},
@@ -120,13 +112,13 @@ object Converters extends Common {
     else Success(value)
   }
 
-  private[ochp] def toHoursOption(value: HoursType): Try[Option[Hours]] = {
-    def toPeriod(ept: ExceptionalPeriodType) =
+  private[ochp] def toHoursOption(value: Gen.HoursType): Try[Option[Hours]] = {
+    def toPeriod(ept: Gen.ExceptionalPeriodType) =
       ExceptionalPeriod(
         Utc.fromOchp(ept.getPeriodBegin),
         Utc.fromOchp(ept.getPeriodEnd))
 
-    def fromJava(v: HoursType) =
+    def fromJava(v: Gen.HoursType) =
       Hours(
         regularHoursOrTwentyFourSeven = regularHours(v),
         exceptionalOpenings =
@@ -134,7 +126,7 @@ object Converters extends Common {
         exceptionalClosings =
           v.getExceptionalClosings.asScala.toList.map(toPeriod))
 
-    def regularHours(v: HoursType): Either[List[RegularHours], Boolean] =
+    def regularHours(v: Gen.HoursType): Either[List[RegularHours], Boolean] =
       Option(v.isTwentyfourseven)
         .map(tfs => Right(tfs == true))
         .getOrElse(Left(v.getRegularHours.asScala.toList.flatMap(toRegularHours)))
@@ -142,21 +134,21 @@ object Converters extends Common {
     safeReadWith(value)(regularOpeningsAreDefined(_).map(fromJava))
   }
 
-  implicit def cdrToCdrInfo(cdr: CDR): CDRInfo = {
+  implicit def cdrToCdrInfo(cdr: CDR): Gen.CDRInfo = {
     def ifNonEmptyThen(opt: Option[String])(f: String => Unit) =
       opt.filter(_.nonEmpty).foreach(f)
 
     import cdr._
-    val cdrInfo = new CDRInfo
+    val cdrInfo = new Gen.CDRInfo
     ifNonEmptyThen(cdr.address)(cdrInfo.setAddress)
     cdrInfo.setCdrId(cdr.cdrId)
     cdrInfo.setChargePointType(cdr.chargePointType)
 
-    val cType = new GenConnectorType()
-    val cFormat = new GenConnectorFormat()
+    val cType = new Gen.ConnectorType
+    val cFormat = new Gen.ConnectorFormat
     cFormat.setConnectorFormat(cdr.connectorType.connectorFormat.toString)
     cType.setConnectorFormat(cFormat)
-    val cStandard = new GenConnectorStandard()
+    val cStandard = new Gen.ConnectorStandard
     cStandard.setConnectorStandard(cdr.connectorType.connectorStandard.toString)
     cType.setConnectorStandard(cStandard)
     cdrInfo.setConnectorType(cType)
@@ -176,7 +168,7 @@ object Converters extends Common {
     ifNonEmptyThen(cdr.meterId)(cdrInfo.setMeterId)
     ifNonEmptyThen(cdr.productType)(cdrInfo.setProductType)
 
-    val cdrStatus = new GenCdrStatusType()
+    val cdrStatus = new Gen.CdrStatusType
     cdrStatus.setCdrStatusType(cdr.status.toString)
     cdrInfo.setStatus(cdrStatus)
     cdrInfo.getChargingPeriods.addAll(
@@ -184,11 +176,11 @@ object Converters extends Common {
     cdrInfo
   }
 
-  private def chargePeriodToGenCp(gcp: CdrPeriod): GenCdrPeriodType = {
-    val period1 = new GenCdrPeriodType()
+  private def chargePeriodToGenCp(gcp: CdrPeriod): Gen.CdrPeriodType = {
+    val period1 = new Gen.CdrPeriodType
     period1.setStartDateTime(WithOffset.toOchp(gcp.startDateTime))
     period1.setEndDateTime(WithOffset.toOchp(gcp.endDateTime))
-    val billingItem = new GenBillingItemType()
+    val billingItem = new Gen.BillingItemType
     billingItem.setBillingItemType(gcp.billingItem.toString)
     period1.setBillingItem(billingItem)
     period1.setBillingValue(gcp.billingValue)
@@ -201,7 +193,7 @@ object Converters extends Common {
   private def toDateTimeZone(tz: String): Try[Option[DateTimeZone]] =
     safeRead(tz)(DateTimeZone.forID)
 
-  implicit def cpInfoToChargePoint(genCp: ChargePointInfo): Option[ChargePoint] = {
+  implicit def cpInfoToChargePoint(genCp: Gen.ChargePointInfo): Option[ChargePoint] = {
     val cp = for {
       openingHours <- toHoursOption(genCp.getOperatingTimes)
       accessHours <- toHoursOption(genCp.getAccessTimes)
@@ -265,8 +257,8 @@ object Converters extends Common {
     }
   }
 
-  private def imagesToGenImages(image: EvseImageUrl): GenEvseImageUrlType  = {
-    val iut = new GenEvseImageUrlType()
+  private def imagesToGenImages(image: EvseImageUrl): Gen.EvseImageUrlType  = {
+    val iut = new Gen.EvseImageUrlType
     iut.setClazz(image.clazz.toString)
     image.height foreach iut.setHeight
     image.width foreach iut.setWidth
@@ -276,24 +268,24 @@ object Converters extends Common {
     iut
   }
 
-  private[ochp] def hoursOptionToHoursType(maybeHours: Option[Hours]): HoursType = {
-    def regHoursToRegHoursType(regHours: RegularHours): RegularHoursType = {
-      val regularHoursType = new RegularHoursType()
+  private[ochp] def hoursOptionToHoursType(maybeHours: Option[Hours]): Gen.HoursType = {
+    def regHoursToRegHoursType(regHours: RegularHours): Gen.RegularHoursType = {
+      val regularHoursType = new Gen.RegularHoursType
       regularHoursType.setWeekday(regHours.weekday)
       regularHoursType.setPeriodBegin(regHours.periodBegin.toString)
       regularHoursType.setPeriodEnd(regHours.periodEnd.toString)
       regularHoursType
     }
 
-    def excPeriodToExcPeriodType(ep: ExceptionalPeriod): ExceptionalPeriodType = {
-      val ept = new ExceptionalPeriodType()
+    def excPeriodToExcPeriodType(ep: ExceptionalPeriod): Gen.ExceptionalPeriodType = {
+      val ept = new Gen.ExceptionalPeriodType
       ept.setPeriodBegin(Utc.toOchp(ep.periodBegin))
       ept.setPeriodEnd(Utc.toOchp(ep.periodEnd))
       ept
     }
 
     maybeHours.map { hours =>
-      val hoursType = new HoursType()
+      val hoursType = new Gen.HoursType
 
       hours.regularHoursOrTwentyFourSeven.fold(
         regHours =>
@@ -310,22 +302,22 @@ object Converters extends Common {
     }.getOrElse(null)
   }
 
-  private def parkRestrToGenParkRestr(pRestr: ParkingRestriction.Value): ParkingRestrictionType = {
-    val prt = new ParkingRestrictionType()
+  private def parkRestrToGenParkRestr(pRestr: ParkingRestriction.Value): Gen.ParkingRestrictionType = {
+    val prt = new Gen.ParkingRestrictionType
     prt.setParkingRestrictionType(pRestr.toString)
     prt
   }
 
-  private def authMethodToGenAuthMethod(authMethod: AuthMethod.Value): AuthMethodType = {
-    val amt = new AuthMethodType()
+  private def authMethodToGenAuthMethod(authMethod: AuthMethod.Value): Gen.AuthMethodType = {
+    val amt = new Gen.AuthMethodType
     amt.setAuthMethodType(authMethod.toString)
     amt
   }
 
-  private def connToGenConn(connector: Connector): GenConnectorType = {
-    val ct = new GenConnectorType()
-    val cs = new GenConnectorStandard()
-    val cf = new GenConnectorFormat()
+  private def connToGenConn(connector: Connector): Gen.ConnectorType = {
+    val ct = new Gen.ConnectorType
+    val cs = new Gen.ConnectorStandard
+    val cf = new Gen.ConnectorFormat
     cs.setConnectorStandard(connector.connectorStandard.toString)
     ct.setConnectorStandard(cs)
     cf.setConnectorFormat(connector.connectorFormat.toString)
@@ -333,8 +325,8 @@ object Converters extends Common {
     ct
   }
 
-  implicit def chargePointToCpInfo(cp: ChargePoint): ChargePointInfo = {
-    val cpi = new ChargePointInfo()
+  implicit def chargePointToCpInfo(cp: ChargePoint): Gen.ChargePointInfo = {
+    val cpi = new Gen.ChargePointInfo
     cpi.setEvseId(cp.evseId.value)
     cpi.setLocationId(cp.locationId)
     cp.timestamp foreach {t =>
@@ -357,13 +349,13 @@ object Converters extends Common {
     cpi.setOperatingTimes(hoursOptionToHoursType(cp.operatingTimes))
     cpi.setAccessTimes(hoursOptionToHoursType(cp.accessTimes))
     cp.status.foreach { st =>
-      val status = new ChargePointStatusType()
+      val status = new Gen.ChargePointStatusType
       status.setChargePointStatusType(st.toString)
       cpi.setStatus(status)
     }
     cpi.getStatusSchedule.addAll(cp.statusSchedule.map(ChargePointScheduleConverter.toOchp).asJavaCollection)
     cp.telephoneNumber foreach cpi.setTelephoneNumber
-    cpi.setLocation(new GeneralLocationType {
+    cpi.setLocation(new Gen.GeneralLocationType {
       setGeneralLocationType(cp.location.toString)
     })
     cp.floorLevel foreach cpi.setFloorLevel
@@ -376,7 +368,7 @@ object Converters extends Common {
     cpi
   }
 
-  implicit def toEvseStatus(s: GetEvseStatusType): Option[EvseStatus] = Try {
+  implicit def toEvseStatus(s: Gen.EvseStatusType): Option[EvseStatus] = Try {
     EvseStatus(
       evseId = EvseId(s.getEvseId),
       majorStatus = EvseStatusMajor.findByName(s.getMajor).getOrElse(EvseStatusMajor.unknown),
