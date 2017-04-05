@@ -4,7 +4,7 @@ package converters
 import Converters._
 import CDRConverter._
 import api._
-import com.thenewmotion.time.Imports._
+import com.github.nscala_time.time.Imports._
 
 class CDRSpec extends Spec {
   "converting a CDR into CDRInfo and back returns the original value" >> {

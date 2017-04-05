@@ -1,7 +1,7 @@
 package com.thenewmotion.ochp
 package converters
 
-import com.thenewmotion.time.Imports._
+import com.github.nscala_time.time.Imports._
 import org.joda.time.PeriodType
 
 import scala.util.{Failure, Try}

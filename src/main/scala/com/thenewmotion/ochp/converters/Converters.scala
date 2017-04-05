@@ -3,11 +3,19 @@ package converters
 
 import api._
 import ChargePointStatus.ChargePointStatus
-import com.thenewmotion.time.Imports._
+import com.github.nscala_time.time.Imports._
 import DateTimeConverters._
 import DurationConverter._
 import GeoPointConverters._
-import eu.ochp._1.{ConnectorType => GenConnectorType, EvseImageUrlType => GenEvseImageUrlType, EmtId => GenEmtId, CdrStatusType => GenCdrStatusType, ConnectorFormat => GenConnectorFormat, ConnectorStandard => GenConnectorStandard, CdrPeriodType => GenCdrPeriodType, BillingItemType => GenBillingItemType, EvseStatusType => GetEvseStatusType, _}
+import eu.ochp._1.{
+  ConnectorType => GenConnectorType,
+  EvseImageUrlType => GenEvseImageUrlType,
+  CdrStatusType => GenCdrStatusType,
+  ConnectorFormat => GenConnectorFormat,
+  ConnectorStandard => GenConnectorStandard,
+  CdrPeriodType => GenCdrPeriodType,
+  BillingItemType => GenBillingItemType,
+  EvseStatusType => GetEvseStatusType, _}
 import org.slf4j.LoggerFactory
 import scala.util.{Try, Success, Failure}
 import scala.language.{implicitConversions, postfixOps}

@@ -2,7 +2,7 @@ package com.thenewmotion.ochp
 
 import api._
 import client.{Result, OchpClient, OchpLiveClient}
-import com.thenewmotion.time.Imports._
+import com.github.nscala_time.time.Imports._
 
 trait OchpService extends OchpApi {
   def client: OchpClient
@@ -19,7 +19,8 @@ trait OchpService extends OchpApi {
 
   def sendCdrs(cdrs: List[CDR]): Result[CDR] = client.addCdrs(cdrs)
   def recvCdrs():List[CDR] = client.getCdrs()
-  def confCdrs(approvedCdrs: List[CDR], declinedCdrs: List[CDR]) = client.confirmCdrs(approvedCdrs, declinedCdrs)
+  def confCdrs(approvedCdrs: List[CDR], declinedCdrs: List[CDR]): Result[Nothing] =
+    client.confirmCdrs(approvedCdrs, declinedCdrs)
 }
 
 trait OchpLiveService {
