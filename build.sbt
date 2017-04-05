@@ -1,12 +1,12 @@
 import sbt._
 
-val cxfVersion = "3.1.6"
+val cxfVersion = "3.1.10"
 
 def cxfRt(lib: String) =
   "org.apache.cxf" % s"cxf-rt-$lib" % cxfVersion
 
 def specs(lib: String) =
-  "org.specs2" %% s"specs2-$lib" % "3.8.6"
+  "org.specs2" %% s"specs2-$lib" % "3.8.9"
 
 
 val ochp = (project in file("."))
@@ -25,11 +25,11 @@ val ochp = (project in file("."))
       cxfRt("frontend-jaxws"),
       cxfRt("transports-http"),
       cxfRt("ws-security"),
-      "com.sun.xml.messaging.saaj" % "saaj-impl" % "1.3.25",
+      "com.sun.xml.messaging.saaj" % "saaj-impl" % "1.3.28",
       "com.github.nscala-time" %% "nscala-time" % "2.16.0",
-      "org.slf4j" % "slf4j-api" % "1.7.21",
+      "org.slf4j" % "slf4j-api" % "1.7.25",
 
-      "com.typesafe" % "config" % "1.3.0" % "it,test",
+      "com.typesafe" % "config" % "1.3.1" % "it,test",
       specs("junit") % "it,test",
       specs("mock") % "it,test"
     ),
