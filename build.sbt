@@ -45,5 +45,6 @@ val ochp = (project in file("."))
       soapui.MockService(
         (resourceDirectory in IntegrationTest).value / "soapui" / "OCHP-1-3-soapui-project.xml",
         "8088")
-    )
+    ),
+    mappings in (Compile, packageSrc) ++= Path.allSubpaths(target.value / "cxf" / "ochp").toSeq
 )
