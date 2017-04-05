@@ -55,7 +55,8 @@ class OchpLiveClientSpecIT extends Specification {
       wsUri = config.getString("service-uri"),
       liveWsUri = config.getString("live-service-uri"),
       user = config.getString("user"),
-      password = config.getString("password"))
+      password = config.getString("password"),
+      requestTimeout = scala.concurrent.duration.Duration(config.getString("request-timeout")))
 
     val liveClient = OchpClient.createCxfLiveClient(conf)
   }
