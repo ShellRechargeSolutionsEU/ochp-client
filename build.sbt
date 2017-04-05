@@ -17,7 +17,7 @@ val ochp = (project in file("."))
     cxf.settings,
     soapui.settings,
 
-    organization := "com.thenewmotion",
+    organization := "com.newmotion",
     name := "ochp-client",
     moduleName := name.value,
 
