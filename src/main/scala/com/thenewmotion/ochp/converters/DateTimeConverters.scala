@@ -2,7 +2,7 @@ package com.thenewmotion.ochp
 package converters
 
 import api.DateTimeNoMillis
-import com.thenewmotion.time.Imports._
+import com.github.nscala_time.time.Imports._
 import eu.ochp._1.{DateTimeType, LocalDateTimeType}
 import org.joda.time.format.DateTimeFormatterBuilder
 

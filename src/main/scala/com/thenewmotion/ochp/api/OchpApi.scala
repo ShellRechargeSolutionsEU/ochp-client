@@ -3,7 +3,8 @@ package api
 
 import TokenType.TokenType
 import com.thenewmotion.ochp.client.Result
-import com.thenewmotion.time.Imports._
+import com.github.nscala_time.time.Imports._
+import org.joda.time.format.ISODateTimeFormat
 
 
 trait OchpApi {
@@ -19,7 +20,7 @@ trait OchpApi {
 
   def sendCdrs(cdrs: List[CDR]): Result[CDR]
   def recvCdrs(): List[CDR]
-  def confCdrs(approvedCdrs: List[CDR], declinedCdrs: List[CDR])
+  def confCdrs(approvedCdrs: List[CDR], declinedCdrs: List[CDR]): Result[Nothing]
 }
 
 

@@ -75,12 +75,12 @@ class OchpClient(cxfClient: OCHP13) {
       resp.getImplausibleCdrsArray.asScala.toList.flatMap(CDRConverter.fromOchp))
   }
 
-  def confirmCdrs(approvedCdrs: Seq[CDR], declinedCdrs: Seq[CDR]) = {
+  def confirmCdrs(approvedCdrs: Seq[CDR], declinedCdrs: Seq[CDR]): Result[Nothing] = {
     val req = new ConfirmCDRsRequest()
     req.getApproved.addAll(approvedCdrs.map(implicitly[CDRInfo](_)).asJava)
     req.getDeclined.addAll(declinedCdrs.map(implicitly[CDRInfo](_)).asJava)
     val resp = cxfClient.confirmCDRs(req)
-    Result(resp.getResult.getResultCode.getResultCode, resp.getResult.getResultDescription, List())
+    Result(resp.getResult.getResultCode.getResultCode, resp.getResult.getResultDescription, Nil)
   }
 
   def setChargePointList(info: Seq[ChargePoint]): Result[ChargePoint] = {

@@ -1,9 +1,13 @@
 import sbt._
 
 val cxfVersion = "3.1.6"
-val specsVersion = "3.6"
 
-crossScalaVersions := Seq(tnm.ScalaVersion.curr)
+def cxfRt(lib: String) =
+  "org.apache.cxf" % s"cxf-rt-$lib" % cxfVersion
+
+def specs(lib: String) =
+  "org.specs2" %% s"specs2-$lib" % "3.8.6"
+
 
 val ochp = (project in file("."))
   .enablePlugins(OssLibPlugin)
@@ -18,15 +22,16 @@ val ochp = (project in file("."))
     moduleName := name.value,
 
     libraryDependencies ++= Seq(
+      cxfRt("frontend-jaxws"),
+      cxfRt("transports-http"),
+      cxfRt("ws-security"),
       "com.sun.xml.messaging.saaj" % "saaj-impl" % "1.3.25",
-      "org.apache.cxf" %  "cxf-rt-frontend-jaxws" % cxfVersion,
-      "org.apache.cxf" %  "cxf-rt-transports-http" % cxfVersion,
-      "org.apache.cxf" %  "cxf-rt-ws-security" % cxfVersion,
-      "com.thenewmotion" %% "time" % "2.8",
+      "com.github.nscala-time" %% "nscala-time" % "2.16.0",
       "org.slf4j" % "slf4j-api" % "1.7.21",
+
       "com.typesafe" % "config" % "1.3.0" % "it,test",
-      "org.specs2" %% "specs2-junit" % "3.6" % "it,test",
-      "org.specs2" %% "specs2-mock" % "3.6" % "it,test"
+      specs("junit") % "it,test",
+      specs("mock") % "it,test"
     ),
 
     cxf.cxfVersion := cxfVersion,
