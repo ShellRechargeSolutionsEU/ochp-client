@@ -6,28 +6,35 @@ Client for [OCHP](http://ochp.eu) written in Scala, for Scala 2.11/2.12
 
 * Open Clearing House Protocol v1.3 generated client and bean classes with help of [cxf](http://cxf.apache.org)
 
-* Service trait that can be instantiated like here:
-    ```scala
-    val service = new OchpService {
-      val conf = OchpConfig(
-        wsUri = "http://localhost:8088/mockeCHS-OCHP_1.3",
-        liveWsUri = "http://localhost:8088/mockeCHS-OCHP_1.3-live",
-        user = "me",
-        password = "mypass"
-      )
-      val client = OchpClient.createCxfClient(conf)
-    }
-    ```
+* Higher-level Scala API to use the OCHP protocol
+* Command-line tool to download roaming authorization information and print it as a CSV
 
-## Integration tests
+## Usage
 
-Integration tests can be run as follows:
+### Higher-level Scala API
 
+Example:
+
+```scala
+val service = new OchpService {
+  val conf = OchpConfig(
+    wsUri = "http://localhost:8088/mockeCHS-OCHP_1.3",
+    liveWsUri = "http://localhost:8088/mockeCHS-OCHP_1.3-live",
+    user = "me",
+    password = "mypass"
+  )
+
+  val client = OchpClient.createCxfClient(conf)
+}
 ```
-sbt it:test
-```
 
-In order for these tests to work, valid credentials need to be provided (see `src/it/resources/reference.conf` for reference).
+### Command-line tool
+
+Call it through sbt like:
+
+`sbt 'ochpCommandLine/run https://echs-q.e-clearing.net/service/ochp/v1.3 <your username> <password>'`
+
+The URI here is for the staging version of the eCHS system; strip the "-q" for the production URI.
 
 ## Setup
 
@@ -63,6 +70,16 @@ In order for these tests to work, valid credentials need to be provided (see `sr
     "com.newmotion" %% "ochp-client" % "1.3.10"
     ```
 
-### A note about versioning
+## Integration tests
+
+Integration tests can be run as follows:
+
+```
+sbt it:test
+```
+
+In order for these tests to work, valid credentials need to be provided (see `src/it/resources/reference.conf` for reference).
+
+## A note about versioning
 
 This library does not follow semantic versioning because we want to keep its version as close as possible to the OCHP version it implements: as such, all version related to OCHP 1.3 will be tagged as `1.3.x`.
