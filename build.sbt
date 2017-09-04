@@ -48,3 +48,11 @@ val ochp = (project in file("."))
     ),
     mappings in (Compile, packageSrc) ++= Path.allSubpaths(target.value / "cxf" / "ochp").toSeq
 )
+
+val ochpCommandLine = (project in file("cmdline"))
+  .enablePlugins(AppPlugin)
+  .dependsOn(ochp)
+  .settings(
+    organization := "com.newmotion",
+    name := "ochp-client-cmdline"
+  )
