@@ -224,8 +224,13 @@ object OchpClient {
     val wssOut = new WSS4JOutInterceptor(outProps)
 
     cxfEndpoint.getOutInterceptors.add(wssOut)
-    cxfEndpoint.getOutInterceptors.add(new LoggingOutInterceptor)
-    cxfEndpoint.getInInterceptors.add(new LoggingInInterceptor)
+    val outInterceptor = new LoggingOutInterceptor()
+    outInterceptor.setPrettyLogging(true)
+    cxfEndpoint.getOutInterceptors.add(outInterceptor)
+    val inInterceptor = new LoggingInInterceptor()
+    inInterceptor.setLimit(8192 * 1024)
+    inInterceptor.setPrettyLogging(true)
+    cxfEndpoint.getInInterceptors.add(inInterceptor)
     port
   }
 
