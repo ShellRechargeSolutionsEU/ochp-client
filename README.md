@@ -54,7 +54,7 @@ The URI here is for the staging version of the eCHS system; strip the "-q" for t
     <dependency>
         <groupId>com.newmotion</groupId>
         <artifactId>ochp-client_2.11(or 2.12)</artifactId>
-        <version>1.3.10</version>
+        <version>1.3.11</version>
     </dependency>
     ```
 
