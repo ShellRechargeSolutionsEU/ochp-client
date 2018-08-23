@@ -40,7 +40,7 @@ object CallProd extends App {
 //    println("\nChargePoint:")
 //    println(cp)}
 
-  val statuses = liveClient.getStatus(Some(DateTime.parse("2018-07-01T08:00:00Z")))
+//  val statuses = liveClient.getStatus(Some(DateTime.parse("2018-07-01T08:00:00Z")))
 //  println(statuses.mkString("\n"))
 
 

@@ -228,7 +228,7 @@ object OchpClient {
     outInterceptor.setPrettyLogging(true)
     cxfEndpoint.getOutInterceptors.add(outInterceptor)
     val inInterceptor = new LoggingInInterceptor()
-    inInterceptor.setLimit(8192 * 1024)
+    inInterceptor.setLimit(16384 * 1024)
     inInterceptor.setPrettyLogging(true)
     cxfEndpoint.getInInterceptors.add(inInterceptor)
     port
