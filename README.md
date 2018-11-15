@@ -1,4 +1,4 @@
-# OCHP client [![Build Status](https://secure.travis-ci.org/thenewmotion/ochp-client.png)](http://travis-ci.org/thenewmotion/ochp-client)
+# OCHP client [![Build Status](https://secure.travis-ci.org/NewMotion/ochp-client.png)](http://travis-ci.org/NewMotion/ochp-client)
 
 Client for [OCHP](http://ochp.eu) written in Scala, for Scala 2.11/2.12
 
