@@ -10,7 +10,7 @@ class HourlyTypeSpec extends Spec {
   "an undefined instance is equivalent to None" >> {
     val toScala = toHoursOption(null)
 
-    toScala must beSuccessfulTry(None)
+    toScala must beSuccessfulTry(beNone)
     hoursOptionToHoursType(toScala.toOption.flatten) mustEqual null
   }
 

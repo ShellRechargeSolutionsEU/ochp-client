@@ -67,7 +67,7 @@ The URI here is for the staging version of the eCHS system; strip the "-q" for t
 
 2. Add the following dependency:
     ```scala
-    "com.newmotion" %% "ochp-client" % "1.3.11"
+    "com.newmotion" %% "ochp-client" % "1.4.0"
     ```
 
 ## Integration tests
