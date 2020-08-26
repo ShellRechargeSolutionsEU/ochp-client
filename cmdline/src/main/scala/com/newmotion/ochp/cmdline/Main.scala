@@ -25,7 +25,7 @@ object Main extends App {
       def client = OchpClient.createCxfClient(conf)
     }
 
-    val eclTokens = ochp.recvAllTokens()
+    val eclTokens = ochp.recvAllTokens().items
 
     System.err.println(s"${eclTokens.size} downloaded from e-clearing")
 

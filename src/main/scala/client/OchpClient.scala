@@ -40,10 +40,13 @@ class OchpClient(cxfClient: OCHP13) {
       resp.getRefusedRoamingAuthorisationInfo.asScala.toList.map(implicitly[ChargeToken](_)))
   }
 
-  def roamingAuthorisationList() = {
-    val resp = cxfClient.getRoamingAuthorisationList(
-      new GetRoamingAuthorisationListRequest)
-    resp.getRoamingAuthorisationInfoArray.asScala.toList.map(implicitly[ChargeToken](_))
+  def roamingAuthorisationList(): Result[ChargeToken] = {
+    val resp = cxfClient.getRoamingAuthorisationList(new GetRoamingAuthorisationListRequest)
+    Result[ChargeToken](
+      resp.getResult.getResultCode.getResultCode,
+      resp.getResult.getResultDescription,
+      resp.getRoamingAuthorisationInfoArray.asScala.toList.map(implicitly[ChargeToken](_))
+    )
   }
 
   def setRoamingAuthorisationListUpdate(info: Seq[ChargeToken]): Result[ChargeToken] = {

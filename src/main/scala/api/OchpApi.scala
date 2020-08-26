@@ -8,7 +8,7 @@ import org.joda.time.format.ISODateTimeFormat
 
 
 trait OchpApi {
-  def recvAllTokens(): List[ChargeToken]
+  def recvAllTokens(): Result[ChargeToken]
   def sendAllTokens(tokens: List[ChargeToken]): Result[ChargeToken]
   def recvNewTokens(lastUpdate: DateTime): List[ChargeToken]
   def sendNewTokens(tokens: List[ChargeToken]): Result[ChargeToken]

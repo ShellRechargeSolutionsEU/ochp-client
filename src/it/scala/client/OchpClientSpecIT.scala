@@ -42,7 +42,7 @@ class OchpClientSpecIT extends Specification {
 
     " receive roamingAuthorisationList" >> new TestScope {
       val authList = client.roamingAuthorisationList()
-      val tokens = authList
+      val tokens = authList.items
       tokens.length === 7
       tokens.head.contractId === "YYABCC00000003"
     }
