@@ -8,7 +8,6 @@ case class OchpConfig(
   liveWsUri: String = "",
   user: String,
   password: String,
-  requestTimeout: Duration = 1.minute,
-  maxTokensInMessage: Int = 300000
+  requestTimeout: Duration = 1.minute
 )
 

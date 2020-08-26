@@ -216,8 +216,6 @@ object OchpClient {
         cs(0).asInstanceOf[WSPasswordCallback].setPassword(conf.password)
     }
 
-    cxfEndpoint.put(StaxUtils.MAX_CHILD_ELEMENTS, int2Integer(conf.maxTokensInMessage))
-
     val outProps = new JMap[String, Object] {
       put(ConfigurationConstants.ACTION, ConfigurationConstants.USERNAME_TOKEN)
       put(ConfigurationConstants.USER, conf.user)
