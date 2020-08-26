@@ -79,7 +79,3 @@ sbt it:test
 ```
 
 In order for these tests to work, valid credentials need to be provided (see `src/it/resources/reference.conf` for reference).
-
-## A note about versioning
-
-This library does not follow semantic versioning because we want to keep its version as close as possible to the OCHP version it implements: as such, all version related to OCHP 1.3 will be tagged as `1.3.x`.
