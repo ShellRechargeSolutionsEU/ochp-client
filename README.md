@@ -1,6 +1,6 @@
 # OCHP client [![Build Status](https://secure.travis-ci.org/NewMotion/ochp-client.png)](http://travis-ci.org/NewMotion/ochp-client)
 
-Client for [OCHP](http://ochp.eu) written in Scala, for Scala 2.11/2.12
+Client for [OCHP](http://ochp.eu) written in Scala, for Scala 2.12/2.13
 
 ## Includes
 
@@ -53,8 +53,8 @@ The URI here is for the staging version of the eCHS system; strip the "-q" for t
     ```xml
     <dependency>
         <groupId>com.newmotion</groupId>
-        <artifactId>ochp-client_2.11(or 2.12)</artifactId>
-        <version>1.3.11</version>
+        <artifactId>ochp-client_2.12(or 2.13)</artifactId>
+        <version>1.4.1</version>
     </dependency>
     ```
 
@@ -67,7 +67,7 @@ The URI here is for the staging version of the eCHS system; strip the "-q" for t
 
 2. Add the following dependency:
     ```scala
-    "com.newmotion" %% "ochp-client" % "1.4.0"
+    "com.newmotion" %% "ochp-client" % "1.4.1"
     ```
 
 ## Integration tests
