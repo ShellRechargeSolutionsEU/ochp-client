@@ -1,9 +1,12 @@
+import com.newmotion.sbt.plugins.SoapUIMockServicePlugin.soapui
 import sbt._
 
-val cxfVersion = "3.1.10"
+// org.apache.cxf.xjcplugins:cxf-xjc-ts:3.3.7 hasn't been released https://repo1.maven.org/maven2/org/apache/cxf/xjcplugins/cxf-xjc-ts/
+// and cannot be excluded from dependencies due to https://github.com/coursier/coursier/issues/853
+val cxfVer = "3.3.1" // "3.3.7"
 
 def cxfRt(lib: String) =
-  "org.apache.cxf" % s"cxf-rt-$lib" % cxfVersion
+  "org.apache.cxf" % s"cxf-rt-$lib" % cxfVer
 
 def specs(lib: String) =
   "org.specs2" %% s"specs2-$lib" % "3.8.9"
@@ -16,7 +19,6 @@ val ochp = (project in file("."))
   .configs(IntegrationTest)
   .settings(
     Defaults.itSettings,
-    cxf.settings,
     soapui.settings,
 
     organization := "com.newmotion",
@@ -36,9 +38,9 @@ val ochp = (project in file("."))
       specs("mock") % "it,test"
     ),
 
-    cxf.cxfVersion := cxfVersion,
-    cxf.wsdls := Seq(
-      cxf.Wsdl(
+    cxfVersion := cxfVer,
+    cxfWsdls := Seq(
+      CxfWsdl(
         (resourceDirectory in Compile).value / "wsdl" / "ochp-1.3.wsdl",
         Seq("-validate", "-xjc-verbose"), "ochp")
     ),
