@@ -21,6 +21,9 @@ val ochp = (project in file("."))
     name := "ochp-client",
     moduleName := name.value,
 
+    scalaVersion := tnm.ScalaVersion.curr,
+    crossScalaVersions := Seq(tnm.ScalaVersion.curr, tnm.ScalaVersion.prev),
+
     libraryDependencies ++= Seq(
       cxfRt("frontend-jaxws"),
       cxfRt("transports-http"),
