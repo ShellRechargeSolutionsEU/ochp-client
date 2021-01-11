@@ -11,9 +11,6 @@ def cxfRt(lib: String) =
 def specs(lib: String) =
   "org.specs2" %% s"specs2-$lib" % "3.8.9"
 
-ThisBuild / scalaVersion := tnm.ScalaVersion.prev
-ThisBuild / crossScalaVersions := Seq(tnm.ScalaVersion.prev, tnm.ScalaVersion.aged)
-
 val ochp = (project in file("."))
   .enablePlugins(OssLibPlugin)
   .configs(IntegrationTest)
@@ -24,6 +21,9 @@ val ochp = (project in file("."))
     organization := "com.newmotion",
     name := "ochp-client",
     moduleName := name.value,
+
+    scalaVersion := tnm.ScalaVersion.prev,
+    crossScalaVersions := Seq(tnm.ScalaVersion.prev, tnm.ScalaVersion.aged),
 
     libraryDependencies ++= Seq(
       cxfRt("frontend-jaxws"),
