@@ -18,7 +18,11 @@ trait OchpService extends OchpApi {
   def recvNewChargePoints(lastUpdate: DateTime):Result[ChargePoint] = client.chargePointListUpdate(lastUpdate)
 
   def sendCdrs(cdrs: List[CDR]): Result[CDR] = client.addCdrs(cdrs)
-  def recvCdrs():List[CDR] = client.getCdrs()
+
+  def recvCdrs(): List[CDR] = client.getCdrs()
+
+  def recvCdrsWithResponse(): CdrsMappedResponse = client.getCdrsWithResponse()
+
   def confCdrs(approvedCdrs: List[CDR], declinedCdrs: List[CDR]): Result[Nothing] =
     client.confirmCdrs(approvedCdrs, declinedCdrs)
 }

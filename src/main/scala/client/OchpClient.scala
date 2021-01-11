@@ -4,12 +4,13 @@ package client
 import converters.Converters._
 import converters.CDRConverter
 import converters.DateTimeConverters._
+
 import java.util.{HashMap => JMap}
 import javax.xml.namespace.QName
 import javax.xml.ws.Service
 import javax.xml.ws.soap.SOAPBinding
 import javax.security.auth.callback.{Callback, CallbackHandler}
-import api.{CDR, ChargePoint, EvseStatus, ChargeToken}
+import api.{CDR, CdrsMappedResponse, ChargePoint, ChargeToken, EvseStatus}
 import eu.ochp._1._
 import eu.ochp._1_3.{OCHP13, OCHP13Live}
 import org.apache.cxf.endpoint.Endpoint
@@ -22,6 +23,7 @@ import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor
 import org.apache.wss4j.common.{ConfigurationConstants, WSS4JConstants}
 import org.apache.wss4j.common.ext.WSPasswordCallback
 import org.joda.time.DateTime
+
 import scala.collection.JavaConverters._
 import scala.language.postfixOps
 import scala.util.Try
@@ -66,6 +68,13 @@ class OchpClient(cxfClient: OCHP13) {
     val resp: GetCDRsResponse = cxfClient.getCDRs(
       new GetCDRsRequest)
     resp.getCdrInfoArray.asScala.toList.flatMap(CDRConverter.fromOchp)
+  }
+  def getCdrsWithResponse() = {
+    val response = cxfClient.getCDRs(new GetCDRsRequest)
+    CdrsMappedResponse(
+      response.getResult,
+      response.getCdrInfoArray.asScala.toList.flatMap(CDRConverter.fromOchp)
+    )
   }
 
   def addCdrs(cdrs: Seq[CDR]) = {
