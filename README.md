@@ -54,7 +54,7 @@ The URI here is for the staging version of the eCHS system; strip the "-q" for t
     <dependency>
         <groupId>com.newmotion</groupId>
         <artifactId>ochp-client_2.11(or 2.12)</artifactId>
-        <version>1.3.12</version>
+        <version>1.3.15</version>
     </dependency>
     ```
 
@@ -67,7 +67,7 @@ The URI here is for the staging version of the eCHS system; strip the "-q" for t
 
 2. Add the following dependency:
     ```scala
-    "com.newmotion" %% "ochp-client" % "1.3.12"
+    "com.newmotion" %% "ochp-client" % "1.3.15"
     ```
 
 ## Integration tests
