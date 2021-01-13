@@ -70,11 +70,7 @@ class OchpClient(cxfClient: OCHP13) {
     resp.getCdrInfoArray.asScala.toList.flatMap(CDRConverter.fromOchp)
   }
   def getCdrsWithResponse() = {
-    val response = cxfClient.getCDRs(new GetCDRsRequest)
-    CdrsMappedResponse(
-      response.getResult,
-      response.getCdrInfoArray.asScala.toList.flatMap(CDRConverter.fromOchp)
-    )
+    CdrsMappedResponse(cxfClient.getCDRs(new GetCDRsRequest))
   }
 
   def addCdrs(cdrs: Seq[CDR]) = {
