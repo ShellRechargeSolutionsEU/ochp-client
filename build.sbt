@@ -1,9 +1,7 @@
 import com.newmotion.sbt.plugins.SoapUIMockServicePlugin.soapui
 import sbt._
 
-// org.apache.cxf.xjcplugins:cxf-xjc-ts:3.3.7 hasn't been released https://repo1.maven.org/maven2/org/apache/cxf/xjcplugins/cxf-xjc-ts/
-// and cannot be excluded from dependencies due to https://github.com/coursier/coursier/issues/853
-val cxfVer = "3.3.1" // "3.3.7"
+val cxfVer = "3.4.2"
 
 def cxfRt(lib: String) =
   "org.apache.cxf" % s"cxf-rt-$lib" % cxfVer
@@ -26,14 +24,16 @@ val ochp = (project in file("."))
       cxfRt("frontend-jaxws"),
       cxfRt("transports-http"),
       cxfRt("ws-security"),
+      "commons-collections" % "commons-collections" % "3.2.2",
       "com.sun.xml.messaging.saaj" % "saaj-impl" % "1.5.2",
       "com.github.nscala-time" %% "nscala-time" % "2.24.0",
       "org.slf4j" % "slf4j-api" % "1.7.30",
-      "com.typesafe" % "config" % "1.4.0" % "it,test",
+      "com.typesafe" % "config" % "1.4.1" % "it,test",
       specs("junit") % "it,test",
       specs("mock") % "it,test"
     ),
     cxfVersion := cxfVer,
+    dependencyOverrides += "org.apache.cxf.xjcplugins" % "cxf-xjc-ts" % "3.3.1",
     cxfWsdls := Seq(
       CxfWsdl((resourceDirectory in Compile).value / "wsdl" / "ochp-1.3.wsdl",
               Seq("-validate", "-xjc-verbose"),
