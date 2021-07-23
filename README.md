@@ -36,40 +36,6 @@ Call it through sbt like:
 
 The URI here is for the staging version of the eCHS system; strip the "-q" for the production URI.
 
-## Setup
-
-### Maven
-
-1. Add this repository to your pom.xml:
-    ```xml
-    <repository>
-        <id>NewMotion</id>
-        <name>The New Motion Repository</name>
-        <url>http://nexus.thenewmotion.com/content/groups/public"</url>
-    </repository>
-    ```
-
-2. Add dependency to your pom.xml:
-    ```xml
-    <dependency>
-        <groupId>com.newmotion</groupId>
-        <artifactId>ochp-client_2.12(or 2.13)</artifactId>
-        <version>1.4.1</version>
-    </dependency>
-    ```
-
-### SBT
-
-1. Add the following resolver:
-    ```scala
-    resolvers += "TNM" at "http://nexus.thenewmotion.com/content/groups/public"
-    ```
-
-2. Add the following dependency:
-    ```scala
-    "com.newmotion" %% "ochp-client" % "1.4.1"
-    ```
-
 ## Integration tests
 
 Integration tests can be run as follows:
